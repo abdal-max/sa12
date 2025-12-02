@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>سمسار التقنية للمقاولات | Samsar Tech Construction</title>
+    <link rel="icon" href="assets/log.jpeg" type="image/jpeg" />
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Bootstrap CSS (For Services Modals) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+      tailwind.config = {
+        corePlugins: {
+           preflight: false, // Disable Tailwind preflight to avoid conflicts with Bootstrap
+        },
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Cairo', 'sans-serif'],
+            },
+            colors: {
+              primary: '#FF6B35', // Bold orange-red for modern, energetic feel
+              secondary: '#004E89', // Deep navy blue for professionalism
+              accent: '#00D4FF', // Bright cyan for energy and tech feel
+              background: '#F5F7FA', // Light neutral background
+              textPrimary: '#1A1A2E', // Deep dark for text
+              muted: '#6C757D', // Gray for secondary text
+              card: '#FFFFFF', // White cards
+              darkBackground: '#0D1117', // Pure dark background
+              darkTextPrimary: '#E8EAED', // Light text for dark mode
+              darkMuted: '#8B92A3', // Muted text for dark mode
+              darkCard: '#161B22' // Dark card background
+            }
+          }
+        }
+      }
+
+      // Initialize Dark Mode
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        
+        /* Offset for fixed navbar when scrolling to ID */
+        html {
+            scroll-padding-top: 100px;
+        }
+
+        /* Nav Link Active State */
+        .nav-link.active {
+            color: #FF6B35 !important; /* Primary Color */
+            background-color: #f5f7fa;
+        }
+
+        /* Dark Mode Active State Adjustment */
+        .dark .nav-link.active {
+            background-color: rgba(255, 107, 53, 0.1); /* Primary with opacity */
+        }
+
+        /* ===== Services Section Styles ===== */
+        #services {
+          position: relative;
+          overflow: hidden;
+          background: linear-gradient(135deg,
+            rgba(13, 27, 42, 0.95) 0%,
+            rgba(27, 38, 59, 0.95) 25%,
+            rgba(15, 23, 42, 0.95) 50%,
+            rgba(30, 41, 61, 0.95) 75%,
+            rgba(51, 65, 85, 0.95) 100%
+          );
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding: 80px 0;
+        }
+
+        #services::before {
+          content: "";
+          position: absolute;
+          top: -50%;
+          left: -10%;
+          width: 600px;
+          height: 600px;
+          background: radial-gradient(circle,
+            rgba(255, 107, 53, 0.15) 0%,
+            rgba(0, 212, 255, 0.1) 50%,
+            transparent 70%
+          );
+          border-radius: 50%;
+          pointer-events: none;
+          animation: float-glow 25s ease-in-out infinite;
+          z-index: 0;
+        }
+
+        #services::after {
+          content: "";
+          position: absolute;
+          bottom: -40%;
+          right: -20%;
+          width: 500px;
+          height: 500px;
+          background: radial-gradient(circle,
+            rgba(0, 212, 255, 0.12) 0%,
+            rgba(255, 107, 53, 0.08) 50%,
+            transparent 70%
+          );
+          border-radius: 50%;
+          pointer-events: none;
+          animation: float-glow-reverse 30s ease-in-out infinite;
+          z-index: 0;
+        }
+
+        @keyframes float-glow {
+          0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); opacity: 0.6; }
+          50% { transform: translateY(-30px) rotate(10deg) scale(1.1); opacity: 0.8; }
+        }
+
+        @keyframes float-glow-reverse {
+          0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); opacity: 0.5; }
+          50% { transform: translateY(25px) rotate(-8deg) scale(1.05); opacity: 0.7; }
+        }
+
+        .services-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 2rem;
+          width: 100%;
+          max-width: 1400px;
+          margin: 0 auto;
+          padding: 0 1rem;
+          position: relative;
+          z-index: 10;
+        }
+
+        .service-card {
+          position: relative;
+          border-radius: 24px;
+          overflow: hidden;
+          backdrop-filter: blur(20px);
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          cursor: pointer;
+          will-change: transform;
+          color: white;
+          text-align: right;
+          height: 100%;
+        }
+
+        .service-card:hover {
+          transform: translateY(-12px) scale(1.02);
+          box-shadow: 0 20px 60px rgba(255, 107, 53, 0.15), 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+          border-color: rgba(255, 107, 53, 0.3);
+        }
+
+        .service-card-inner {
+          padding: 2rem;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          position: relative;
+          z-index: 2;
+        }
+
+        .service-icon-container {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 1.5rem;
+          position: relative;
+        }
+
+        .service-icon-wrapper {
+          position: relative;
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          overflow: hidden;
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), inset 0 2px 4px rgba(255, 255, 255, 0.1);
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .service-card:hover .service-icon-wrapper {
+          transform: scale(1.1) rotate(5deg);
+          box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.15);
+        }
+
+        .service-icon-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          border-radius: 50%;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .service-glow-animation {
+          position: absolute;
+          top: -20px; left: -20px; right: -20px; bottom: -20px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(255, 107, 53, 0.3) 0%, rgba(0, 212, 255, 0.2) 50%, transparent 70%);
+          opacity: 0;
+          animation: floating-glow 4s ease-in-out infinite;
+          pointer-events: none;
+        }
+
+        .service-card:hover .service-glow-animation { opacity: 1; }
+
+        @keyframes floating-glow {
+            0%, 100% { transform: scale(0.9); filter: brightness(1); }
+            50% { transform: scale(1.1); filter: brightness(1.2); }
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #00D4FF;
+        }
+
+        .service-description {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .service-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+        }
+
+        .service-details-btn {
+            background-color: #004E89;
+            border-color: #004E89;
+            color: white;
+            flex-grow: 1;
+        }
+
+        .service-details-btn:hover { background-color: #003460; border-color: #003460; color: white; }
+
+        .service-contact-btn {
+            background-color: #FF6B35;
+            border-color: #FF6B35;
+            color: white;
+            flex-grow: 1;
+        }
+        
+        .service-contact-btn:hover { background-color: #E55A23; border-color: #E55A23; }
+
+        /* Bootstrap Modal Styles Fixes */
+        .modal-content {
+            background-color: #1a293a;
+            color: white;
+            border-radius: 1rem;
+            text-align: right;
+        }
+        .modal-header { border-bottom-color: rgba(255, 255, 255, 0.1); }
+        .modal-footer { border-top-color: rgba(255, 255, 255, 0.1); }
+        .btn-close { filter: invert(1) grayscale(100%) brightness(200%); margin-left: 0; margin-right: auto;}
+        .service-detail-image { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; }
+        
+        /* Fix Tailwind/Bootstrap Conflicts */
+        h1, h2, h3, h4, h5, h6 { margin-top: 0; }
+        button:focus { outline: none; }
+
+        /* ===== Custom Portfolio Modal Styles ===== */
+        .custom-modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            overflow-y: auto;
+            backdrop-filter: blur(5px);
+        }
+        .custom-modal.flex { display: flex; }
+        .custom-modal-content {
+            background-color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 1.5rem;
+            max-width: 56rem; /* max-w-4xl */
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        
+        /* Dark Mode for Custom Modal */
+        .dark .custom-modal-content {
+            background-color: #1e293b; /* Slate 800 */
+            color: #f8fafc; /* Slate 50 */
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.6",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/"
+  }
+}
+</script>
+</head>
+<body class="bg-background text-textPrimary dark:bg-darkBackground dark:text-darkTextPrimary flex flex-col min-h-screen transition-colors duration-300">
+
+    <!-- Navbar -->
+    <nav class="bg-card dark:bg-darkCard dark:border-b dark:border-slate-800 text-textPrimary dark:text-darkTextPrimary shadow-md fixed w-full top-0 z-50 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-24">
+                <!-- Logo -->
+                <a href="#home" class="flex items-center space-x-3 space-x-reverse no-underline">
+                    <img src="assets/log.jpeg" alt="Samsar Tech Logo" class="h-16 w-auto object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                    
+                    <!-- Fallback -->
+                    <div class="flex flex-col pr-2">
+                        <div class="flex items-center gap-1">
+                            <span class="text-xl font-bold tracking-wide text-primary dark:text-white">سمسار التقنية</span>
+                            <span class="text-xl font-bold tracking-wide text-accent">للمقاولات</span>
+                        </div>
+                        <span class="text-xs text-gray-500 dark:text-gray-400 tracking-wider">Samsar Tech Construction</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-4">
+                    <div class="ml-4 flex items-baseline space-x-4 space-x-reverse">
+                        <a href="#home" class="nav-link px-3 py-2 rounded-md text-sm font-bold transition-colors duration-200 no-underline text-gray-600 dark:text-gray-300" style="--tw-text-opacity: 1;">الرئيسية</a>
+                        <a href="#about" class="nav-link px-3 py-2 rounded-md text-sm font-bold transition-colors duration-200 no-underline text-gray-600 dark:text-gray-300" style="--tw-text-opacity: 1;">من نحن</a>
+                        <a href="#services" class="nav-link px-3 py-2 rounded-md text-sm font-bold transition-colors duration-200 no-underline text-gray-600 dark:text-gray-300" style="--tw-text-opacity: 1;">خدماتنا</a>
+                        <a href="#portfolio" class="nav-link px-3 py-2 rounded-md text-sm font-bold transition-colors duration-200 no-underline text-gray-600 dark:text-gray-300" style="--tw-text-opacity: 1;">مشاريعنا</a>
+                        <a href="#contact" class="nav-link px-3 py-2 rounded-md text-sm font-bold transition-colors duration-200 no-underline text-gray-600 dark:text-gray-300" style="--tw-text-opacity: 1;">اتصل بنا</a>
+                    </div>
+                    
+                    <!-- Dark Mode Toggle (Desktop) -->
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-800 transition-colors focus:outline-none" aria-label="Toggle Dark Mode">
+                        <i data-lucide="moon" class="theme-icon w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Mobile controls -->
+                <div class="md:hidden flex items-center gap-2">
+                    <!-- Dark Mode Toggle (Mobile) -->
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-800 transition-colors focus:outline-none" aria-label="Toggle Dark Mode">
+                        <i data-lucide="moon" class="theme-icon w-5 h-5"></i>
+                    </button>
+                    
+                    <!-- Menu Button -->
+                    <button type="button" onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 focus:outline-none">
+                        <i data-lucide="menu" id="menu-icon" class="block h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 shadow-lg">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 no-underline">الرئيسية</a>
+                <a href="#about" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 no-underline">من نحن</a>
+                <a href="#services" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 no-underline">خدماتنا</a>
+                <a href="#portfolio" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 no-underline">مشاريعنا</a>
+                <a href="#contact" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 no-underline">اتصل بنا</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-24">
+        
+        <!-- ================= HOME SECTION ================= -->
+        <section id="home" class="w-full">
+            <!-- Hero Section -->
+            <section class="relative h-[600px] flex items-center justify-center overflow-hidden" style="background: linear-gradient(135deg, #FF6B35 0%, #004E89 100%);">
+                <div class="absolute inset-0 z-0">
+                    <img src="assets/hero/hero1.jpg" alt="Technology Background" class="w-full h-full object-cover opacity-20">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                </div>
+                <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight">
+                        حلول تقنية ومقاولات <br /> <span class="text-accent">لبنية تحتية متكاملة</span>
+                    </h1>
+                    <p class="text-xl text-gray-300 mb-8 font-light">
+                        شريكك الموثوق لأنظمة الشبكات، كاميرات المراقبة، وحلول المقاولات العامة.
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <a href="#contact" class="font-bold py-3 px-8 rounded-full transition-all duration-300 flex items-center justify-center gap-2 no-underline" style="background: #00D4FF; color: white;" onmouseover="this.style.background='#00B8D4'" onmouseout="this.style.background='#00D4FF'">
+                            اطلب استشارة مجانية
+                            <i data-lucide="arrow-left" class="h-5 w-5"></i>
+                        </a>
+                        <a href="#services" class="bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-full transition-all duration-300 no-underline" onmouseover="this.style.background='white'; this.style.color='#FF6B35'" onmouseout="this.style.background='transparent'; this.style.color='white'">
+                            استكشف خدماتنا
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Brief Services Cards -->
+            <section class="py-16 bg-card dark:bg-darkCard transition-colors duration-300">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl font-bold text-textPrimary dark:text-darkTextPrimary">نظرة عامة</h2>
+                        <p class="mt-4 text-muted dark:text-darkMuted">خدمات سريعة وموثوقة لجميع القطاعات</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <a href="#services" class="bg-gray-50 dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all text-center group cursor-pointer no-underline block">
+                            <div class="inline-flex items-center justify-center p-4 rounded-full mb-4 transition-colors duration-300" style="background: #FF6B35; color: white;">
+                                <i data-lucide="wifi" class="h-8 w-8"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 text-gray-800 dark:text-white">أنظمة الشبكات</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">تصميم وتركيب شبكات سلكية ولاسلكية مستقرة.</p>
+                        </a>
+                        <a href="#services" class="bg-gray-50 dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all text-center group cursor-pointer no-underline block">
+                            <div class="inline-flex items-center justify-center p-4 rounded-full mb-4 transition-colors duration-300" style="background: #004E89; color: white;">
+                                <i data-lucide="camera" class="h-8 w-8"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 text-gray-800 dark:text-white">كاميرات المراقبة</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">أنظمة مراقبة متطورة لحماية ممتلكاتك.</p>
+                        </a>
+                        <a href="#services" class="bg-gray-50 dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all text-center group cursor-pointer no-underline block">
+                            <div class="inline-flex items-center justify-center p-4 rounded-full mb-4 transition-colors duration-300" style="background: #00D4FF; color: white;">
+                                <i data-lucide="fingerprint" class="h-8 w-8"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 text-gray-800 dark:text-white">اأنظمة الصوتيات</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">تحكم ذكي في الصوتيات  .</p>
+                        </a>
+                        <a href="#services" class="bg-gray-50 dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all text-center group cursor-pointer no-underline block">
+                            <div class="inline-flex items-center justify-center p-4 rounded-full mb-4 transition-colors duration-300" style="background: linear-gradient(135deg, #FF6B35, #004E89); color: white;">
+                                <i data-lucide="hard-hat" class="h-8 w-8"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 text-gray-800 dark:text-white">الانتركم </h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">تأسيس البنية التحتية والإنشاءات.</p>
+                        </a>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <a href="#services" class="bg-gray-50 dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all text-center group cursor-pointer no-underline block">
+                            <div class="inline-flex items-center justify-center p-4 rounded-full mb-4 transition-colors duration-300" style="background: #FF6B35; color: white;">
+                                <i data-lucide="wifi" class="h-8 w-8"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 text-gray-800 dark:text-white">أنظمة الشبكات</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">تصميم وتركيب شبكات سلكية ولاسلكية مستقرة.</p>
+                        </a>
+                        <a href="#services" class="bg-gray-50 dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all text-center group cursor-pointer no-underline block">
+                            <div class="inline-flex items-center justify-center p-4 rounded-full mb-4 transition-colors duration-300" style="background: #004E89; color: white;">
+                                <i data-lucide="camera" class="h-8 w-8"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 text-gray-800 dark:text-white">كاميرات المراقبة</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">أنظمة مراقبة متطورة لحماية ممتلكاتك.</p>
+                        </a>
+                        <a href="#services" class="bg-gray-50 dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all text-center group cursor-pointer no-underline block">
+                            <div class="inline-flex items-center justify-center p-4 rounded-full mb-4 transition-colors duration-300" style="background: #00D4FF; color: white;">
+                                <i data-lucide="fingerprint" class="h-8 w-8"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 text-gray-800 dark:text-white">أنظمة البصمة</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">تحكم ذكي في الدخول وإدارة الحضور.</p>
+                        </a>
+                        <a href="#services" class="bg-gray-50 dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all text-center group cursor-pointer no-underline block">
+                            <div class="inline-flex items-center justify-center p-4 rounded-full mb-4 transition-colors duration-300" style="background: linear-gradient(135deg, #FF6B35, #004E89); color: white;">
+                                <i data-lucide="hard-hat" class="h-8 w-8"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 text-gray-800 dark:text-white">السنترالات</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">تأسيس البنية التحتية والإنشاءات.</p>
+                        </a>
+                    </div>
+                    
+                   
+                </div>
+            </section>
+        </section>
+
+        <!-- ================= ABOUT SECTION ================= -->
+        <section id="about" class="w-full bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 transition-colors duration-300">
+            <div class="text-white py-20 px-4" style="background: linear-gradient(135deg, #FF6B35 0%, #004E89 100%);">
+                <div class="max-w-7xl mx-auto text-center">
+                    <h1 class="text-4xl font-bold mb-4">من نحن</h1>
+                    <p class="text-xl text-gray-100 max-w-2xl mx-auto">
+                        نبني جسور التكنولوجيا الآمنة لشركات المستقبل.
+                    </p>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <!-- Story Section -->
+                <div class="mb-20">
+                    <div class="flex flex-col md:flex-row gap-12 items-center">
+                        <div class="md:w-1/2">
+                            <img src="assets/about.jpeg" alt="About Samsar Tech" class="rounded-xl shadow-lg w-full">
+                        </div>
+                        <div class="md:w-1/2">
+                            <h2 class="text-3xl font-bold text-textPrimary dark:text-darkTextPrimary mb-6 flex items-center gap-2">
+                                <i data-lucide="users" style="color: #FF6B35;"></i>
+                                قصتنا
+                            </h2>
+                            <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-lg mb-4">
+                                تأسست <strong>سمسار التقنية للمقاولات</strong> عام 2022 لتكون رائدة في تقديم حلول البنية التحتية التقنية في المنطقة. بدأنا كفريق صغير من المهندسين والفنيين الشغوفين، ونما فريقنا ليصبح شريكاً استراتيجياً للعديد من الشركات والمؤسسات.
+                            </p>
+                            <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
+                                نتخصص في توفير وتركيب وصيانة أنظمة الشبكات، كاميرات المراقبة، أنظمة البصمة، والإنتركم، بالإضافة إلى خدمات المقاولات العامة بأعلى معايير الجودة العالمية.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vision -->
+                <div class="bg-card dark:bg-darkCard rounded-2xl p-10 mb-20 text-center border border-gray-100 dark:border-slate-700">
+                   <i data-lucide="target" class="h-16 w-16 mx-auto mb-6" style="color: #004E89;"></i>
+                   <h2 class="text-3xl font-bold text-textPrimary dark:text-darkTextPrimary mb-4">رؤيتنا</h2>
+                   <p class="text-xl text-muted dark:text-darkMuted max-w-3xl mx-auto mt-4">
+                     أن نكون الخيار الأول للشركات في المنطقة عندما يتعلق الأمر بالحلول التقنية المتكاملة والمقاولات، من خلال تقديم خدمات مبتكرة تساهم في رفع كفاءة بيئة العمل.
+                   </p>
+                </div>
+
+                <!-- Values -->
+                <div>
+                    <h2 class="text-3xl font-bold text-textPrimary dark:text-darkTextPrimary mb-10 text-center">قيمنا الأساسية</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-card dark:bg-darkCard p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow" style="border-top: 4px solid #FF6B35;">
+                            <i data-lucide="shield" class="h-10 w-10 mb-4" style="color: #FF6B35;"></i>
+                            <h3 class="text-xl font-bold mb-3 text-textPrimary dark:text-darkTextPrimary">الجودة</h3>
+                            <p class="text-muted dark:text-darkMuted">الالتزام بأفضل المعايير والمعدات العالمية لضمان استدامة الحلول المقدمة.</p>
+                        </div>
+                        <div class="bg-card dark:bg-darkCard p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow" style="border-top: 4px solid #004E89;">
+                            <i data-lucide="pen-tool" class="h-10 w-10 mb-4" style="color: #004E89;"></i>
+                            <h3 class="text-xl font-bold mb-3 text-textPrimary dark:text-darkTextPrimary">الموثوقية</h3>
+                            <p class="text-muted dark:text-darkMuted">توفير دعم وصيانة مستمرة لضمان عمل أنظمتك بكفاءة دون انقطاع.</p>
+                        </div>
+                        <div class="bg-card dark:bg-darkCard p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow" style="border-top: 4px solid #00D4FF;">
+                            <i data-lucide="lightbulb" class="h-10 w-10 mb-4" style="color: #00D4FF;"></i>
+                            <h3 class="text-xl font-bold mb-3 text-textPrimary dark:text-darkTextPrimary">الابتكار</h3>
+                            <p class="text-muted dark:text-darkMuted">مواكبة أحدث التقنيات في عالم الشبكات والأمان لتقديم الأفضل لعملائنا.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SERVICES SECTION ================= -->
+        <section id="services" class="w-full">
+            <div class="container relative z-10">
+                <div class="text-center mb-5">
+                    <h2 class="display-5 fw-bold mb-3 text-white">خدماتنا</h2>
+                    <p class="lead text-white-50">
+                        نغطي احتياجات الأمان والشبكات لكل المشاريع - من المنازل إلى الشركات.
+                    </p>
+                </div>
+
+                <!-- Services Grid Target -->
+                <div class="services-grid" id="services-grid-container">
+                    <!-- Cards injected here by JS -->
+                </div>
+
+                <!-- Service Details Modals Target -->
+                <div id="modals-container">
+                    <!-- Modals injected here by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PORTFOLIO SECTION (NEW) ================= -->
+        <section id="portfolio" class="w-full bg-white dark:bg-slate-900 py-20 transition-colors duration-300">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: #FF6B35;">مشاريعنا الناجحة</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                        فخورون بخدمة مجموعة متنوعة من العملاء في القطاعات التعليمية، الحكومية، التجارية والخدمية بأعلى معايير الجودة والاحترافية.
+                    </p>
+                </div>
+                
+                <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                    <!-- Projects will be injected here by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CONTACT SECTION ================= -->
+        <section id="contact" class="w-full bg-gray-50 dark:bg-slate-950 border-t border-gray-200 dark:border-slate-800 transition-colors duration-300">
+             <div class="text-white py-16 px-4" style="background: linear-gradient(135deg, #004E89 0%, #FF6B35 100%);">
+                <div class="max-w-7xl mx-auto text-center">
+                    <h1 class="text-4xl font-bold mb-4">اتصل بنا</h1>
+                    <p class="text-xl text-gray-100 max-w-2xl mx-auto">
+                        نحن هنا للإجابة على استفساراتك وتقديم الاستشارة المجانية.
+                    </p>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 -mt-10">
+                <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-xl overflow-hidden flex flex-col lg:flex-row mb-16">
+                    <!-- Contact Info Side -->
+                    <div class="lg:w-1/3 bg-slate-900 dark:bg-slate-950 text-white p-10">
+                        <h3 class="text-2xl font-bold mb-8">معلومات التواصل</h3>
+                        
+                        <div class="space-y-8">
+                            <div class="flex items-start gap-4">
+                                <i data-lucide="map-pin" class="w-6 h-6 mt-1" style="color: #00D4FF;"></i>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">العنوان</h4>
+                                    <p class="text-gray-300">الرياض، حي العليا، شارع التحلية، المملكة العربية السعودية</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <i data-lucide="phone" class="w-6 h-6 mt-1" style="color: #00D4FF;"></i>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">الهاتف</h4>
+                                    <p class="text-gray-300 dir-ltr text-right">+966 50 123 4567</p>
+                                    <p class="text-gray-400 text-sm mt-1">المبيعات والدعم الفني</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <i data-lucide="mail" class="w-6 h-6 mt-1" style="color: #00D4FF;"></i>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">البريد الإلكتروني</h4>
+                                    <p class="text-gray-300">info@samsar-tech.com</p>
+                                    <p class="text-gray-300">sales@samsar-tech.com</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <i data-lucide="clock" class="w-6 h-6 mt-1" style="color: #00D4FF;"></i>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">ساعات العمل</h4>
+                                    <p class="text-gray-300">الأحد - الخميس: 9:00 ص - 6:00 م</p>
+                                    <p class="text-gray-300">الجمعة - السبت: مغلق</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Side -->
+                    <div class="lg:w-2/3 p-10">
+                        <div id="contact-success" class="hidden h-full flex flex-col items-center justify-center text-center">
+                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                                <i data-lucide="send" class="w-8 h-8 text-green-600"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">شكراً لك!</h3>
+                            <p class="text-gray-600 dark:text-gray-300">تم استلام رسالتك بنجاح، وسنتواصل معك في أقرب وقت.</p>
+                            <button onclick="resetForm()" class="mt-6 font-bold hover:underline" style="color: #FF6B35;">
+                                إرسال رسالة أخرى
+                            </button>
+                        </div>
+
+                        <form id="contact-form" onsubmit="submitForm(event)">
+                            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">أرسل لنا رسالة</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label htmlFor="name" class="block text-sm font-medium text-muted dark:text-darkMuted mb-2">الاسم الكامل</label>
+                                    <input type="text" id="name" name="name" required class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white outline-none transition-all" placeholder="أدخل اسمك" style="--focus-ring: #FF6B35;" />
+                                </div>
+                                <div>
+                                    <label htmlFor="phone" class="block text-sm font-medium text-muted dark:text-darkMuted mb-2">رقم الجوال</label>
+                                    <input type="tel" id="phone" name="phone" required class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white outline-none transition-all" placeholder="050xxxxxxx" style="--focus-ring: #FF6B35;" />
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                    <label htmlFor="email" class="block text-sm font-medium text-muted dark:text-darkMuted mb-2">البريد الإلكتروني</label>
+                                <input type="email" id="email" name="email" required class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition-all" placeholder="example@email.com" />
+                            </div>
+
+                            <div class="mb-8">
+                                <label htmlFor="message" class="block text-sm font-medium text-muted dark:text-darkMuted mb-2">الرسالة</label>
+                                <textarea id="message" name="message" required rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition-all" placeholder="كيف يمكننا مساعدتك؟"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full bg-secondary hover:bg-sky-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 shadow-md flex items-center justify-center gap-2">
+                                <i data-lucide="send" class="w-5 h-5"></i>
+                                إرسال الرسالة
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- FAQ Section -->
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-10">
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center justify-center gap-2">
+                            <i data-lucide="help-circle" class="text-secondary w-8 h-8"></i>
+                            الأسئلة الشائعة
+                        </h2>
+                        <p class="text-gray-600 dark:text-gray-400 mt-2">إجابات على أكثر الاستفسارات شيوعاً حول خدماتنا</p>
+                    </div>
+
+                    <div id="faq-container" class="space-y-4">
+                        <!-- FAQs will be injected here via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Project Modal Structure -->
+    <div id="projectModal" class="custom-modal">
+        <div class="custom-modal-content" id="modal-content-wrapper">
+            <!-- Modal content generated by JS -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w-full bg-gradient-to-r from-secondary via-primary to-accent dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 text-white dark:text-darkTextPrimary pt-10 pb-6 mt-auto transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Brand Info -->
+                <div>
+                    <div class="flex items-center space-x-3 space-x-reverse mb-4 bg-white/20 dark:bg-slate-800/50 p-3 rounded-xl w-fit backdrop-blur-sm">
+                        <img src="logo.png" alt="Samsar Tech" class="h-12 w-auto" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'" />
+                        <i data-lucide="shield-check" class="h-10 w-10 text-accent hidden"></i>
+                        <div class="flex flex-col pr-2">
+                             <span class="text-xl font-bold text-white">سمسار التقنية</span>
+                             <span class="text-sm font-bold text-accent">للمقاولات</span>
+                        </div>
+                    </div>
+                    <p class="text-sm leading-6 text-white/90 dark:text-gray-300">
+                        شريكك الموثوق لأنظمة الشبكات والأمان المتطورة والمقاولات العامة. حلول متكاملة لبيئة عمل آمنة وذكية.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-4 flex items-center gap-2">
+                        <i data-lucide="link" class="h-5 w-5 text-accent"></i>
+                        روابط سريعة
+                    </h3>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="hover:text-accent transition-colors no-underline flex items-center gap-2 hover:pr-2 duration-300"><i data-lucide="chevron-left" class="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity"></i> من نحن</a></li>
+                        <li><a href="#services" class="hover:text-accent transition-colors no-underline flex items-center gap-2 hover:pr-2 duration-300"><i data-lucide="chevron-left" class="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity"></i> خدماتنا</a></li>
+                        <li><a href="#portfolio" class="hover:text-accent transition-colors no-underline flex items-center gap-2 hover:pr-2 duration-300"><i data-lucide="chevron-left" class="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity"></i> معرض الأعمال</a></li>
+                        <li><a href="#contact" class="hover:text-accent transition-colors no-underline flex items-center gap-2 hover:pr-2 duration-300"><i data-lucide="chevron-left" class="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity"></i> اتصل بنا</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-4 flex items-center gap-2">
+                        <i data-lucide="contact" class="h-5 w-5 text-accent"></i>
+                        تواصل معنا
+                    </h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-center space-x-2 space-x-reverse hover:text-accent transition-colors duration-300">
+                            <div class="flex items-center justify-center w-8 h-8 rounded-full bg-white/20 dark:bg-slate-800/50">
+                                <i data-lucide="map-pin" class="h-4 w-4 text-accent"></i>
+                            </div>
+                            <span>الرياض، المملكة العربية السعودية</span>
+                        </li>
+                        <li class="flex items-center space-x-2 space-x-reverse hover:text-accent transition-colors duration-300">
+                            <div class="flex items-center justify-center w-8 h-8 rounded-full bg-white/20 dark:bg-slate-800/50">
+                                <i data-lucide="phone" class="h-4 w-4 text-accent"></i>
+                            </div>
+                            <span dir="ltr">+966 50 000 0000</span>
+                        </li>
+                        <li class="flex items-center space-x-2 space-x-reverse hover:text-accent transition-colors duration-300">
+                            <div class="flex items-center justify-center w-8 h-8 rounded-full bg-white/20 dark:bg-slate-800/50">
+                                <i data-lucide="mail" class="h-4 w-4 text-accent"></i>
+                            </div>
+                            <span>info@samsar-tech.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-8 border-t border-white/20 dark:border-slate-700 text-center text-sm">
+                <p class="text-white/80 dark:text-gray-400">&copy; <span id="year"></span> شركة سمسار التقنية للمقاولات. جميع الحقوق محفوظة.</p>
+                <p class="text-white/60 dark:text-gray-500 text-xs mt-2">تم التصميم والبرمجة بأحدث التقنيات لخدمتكم</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Application Scripts -->
+    <script>
+        // Set Year
+        document.getElementById('year').innerText = new Date().getFullYear();
+
+        // Dark Mode Logic
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const isDark = html.classList.toggle('dark');
+            localStorage.theme = isDark ? 'dark' : 'light';
+            updateThemeIcons();
+        }
+
+        function updateThemeIcons() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const iconName = isDark ? 'sun' : 'moon';
+            document.querySelectorAll('.theme-icon').forEach(icon => {
+                icon.setAttribute('data-lucide', iconName);
+            });
+            lucide.createIcons();
+        }
+
+        // Call updateThemeIcons on load to sync icon
+        window.addEventListener('DOMContentLoaded', updateThemeIcons);
+
+        // FAQ Data
+        const faqs = [
+            {
+                question: "هل تقدمون ضماناً على التركيب والأجهزة؟",
+                answer: "نعم، نقدم ضماناً شاملاً على جميع الأجهزة التي نقوم بتوريدها حسب ضمان الوكيل، بالإضافة إلى ضمان على جودة التركيب والبرمجة لضمان راحة بالك."
+            },
+            {
+                question: "هل تتوفر عقود صيانة سنوية للشركات؟",
+                answer: "بالتأكيد، نوفر عقود صيانة دورية (سنوية أو نصف سنوية) لضمان عمل أنظمتك بكفاءة عالية وتجنب الأعطال المفاجئة."
+            },
+            {
+                question: "ما هي المناطق التي تغطونها؟",
+                answer: "مقرنا الرئيسي في الرياض، ونغطي جميع أحياء الرياض والمناطق المحيطة بها. للمشاريع الكبيرة، يمكننا تقديم خدماتنا في مناطق أخرى بالمملكة."
+            },
+            {
+                question: "هل يمكنني مشاهدة كاميرات المراقبة عن طريق الجوال؟",
+                answer: "نعم، جميع أنظمة المراقبة الحديثة التي نقوم بتركيبها تدعم المشاهدة عن بعد عبر تطبيقات الجوال (iPhone و Android) ومن أي مكان في العالم."
+            },
+            {
+                question: "كم يستغرق تركيب شبكة أو نظام مراقبة؟",
+                answer: "تعتمد المدة على حجم المشروع. المشاريع الصغيرة للمنازل والمكاتب الصغيرة عادة ما تستغرق 1-3 أيام عمل، بينما المشاريع الكبيرة يتم تحديد جدول زمني لها بعد المعاينة."
+            }
+        ];
+
+        // Services Data
+        const defaultServices = [
+            {
+                id: 1,
+                title: "تركيب كاميرات مراقبة",
+                description: "حلول متكاملة للمراقبة الأمنية بتقنيات عالية الدقة للمنازل والشركات.",
+                image: "assets/services/1.jpg",
+                types: ["كاميرات داخلية", "كاميرات خارجية", "أنظمة لاسلكية", "أنظمة سلكية"],
+                features: ["دقة 4K", "رؤية ليلية متقدمة", "وصول عن بعد عبر التطبيق", "تسجيل مستمر"]
+            },
+              {
+                id: 1,
+                title: "تركيب كاميرات مراقبة",
+                description: "حلول متكاملة للمراقبة الأمنية بتقنيات عالية الدقة للمنازل والشركات.",
+                image: "assets/services/1.jpg",
+                types: ["كاميرات داخلية", "كاميرات خارجية", "أنظمة لاسلكية", "أنظمة سلكية"],
+                features: ["دقة 4K", "رؤية ليلية متقدمة", "وصول عن بعد عبر التطبيق", "تسجيل مستمر"]
+            },
+               {
+                id: 2,
+                title: "تركيب كاميرات مراقبة",
+                description: "حلول متكاملة للمراقبة الأمنية بتقنيات عالية الدقة للمنازل والشركات.",
+                image: "assets/services/1.jpg",
+                types: ["كاميرات داخلية", "كاميرات خارجية", "أنظمة لاسلكية", "أنظمة سلكية"],
+                features: ["دقة 4K", "رؤية ليلية متقدمة", "وصول عن بعد عبر التطبيق", "تسجيل مستمر"]
+            },
+               {
+                id: 3,
+                title: "تركيب كاميرات مراقبة",
+                description: "حلول متكاملة للمراقبة الأمنية بتقنيات عالية الدقة للمنازل والشركات.",
+                image: "assets/services/1.jpg",
+                types: ["كاميرات داخلية", "كاميرات خارجية", "أنظمة لاسلكية", "أنظمة سلكية"],
+                features: ["دقة 4K", "رؤية ليلية متقدمة", "وصول عن بعد عبر التطبيق", "تسجيل مستمر"]
+            },
+            
+            {
+                id: 6,
+                title: "تمديد شبكات إنترنت",
+                description: "بنية تحتية قوية للشبكات السلكية واللاسلكية لضمان أفضل أداء.",
+                image: "assets/services/12.jpg",
+                types: ["شبكات منزلية", "شبكات تجارية", "تغطية Wi-Fi موسعة", "نقاط وصول خارجية"],
+                features: ["سرعات عالية", "استقرار الاتصال", "أمان الشبكة", "إعدادات مخصصة"]
+            },
+            {
+                id: 4,
+                title: "أنظمة الإنذار الذكية",
+                description: "حماية شاملة ضد السرقة والحرائق مع تنبيهات فورية على جوالك.",
+                image: "assets/services/3.jpg",
+                types: ["إنذار ضد السرقة", "كاشف دخان وحرارة", "مستشعرات حركة", "ربط مع الأمن العام"],
+                features: ["تحكم عبر الجوال", "صوت إنذار قوي", "بطارية احتياطية", "سهولة التركيب"]
+            },
+             {
+                id: 5,
+                title: "صيانة دورية للأنظمة",
+                description: "نضمن استمرارية عمل أنظمتك الأمنية والشبكات بأفضل كفاءة ممكنة.",
+                image: "assets/services/4.jpg",
+                types: ["عقود صيانة سنوية", "زيارات طارئة", "تحديث البرامج", "تنظيف وفحص المعدات"],
+                features: ["دعم 24/7", "فنيون معتمدون", "قطع غيار أصلية", "تقارير مفصلة"]
+            }
+            
+        ];
+
+        // Real Projects Data
+        const projectsData = [
+            {
+                id: 1,
+                title: "منصة تعليمية متكاملة",
+                description: "تصميم وتطوير منصة تعليمية تفاعلية للتدريب عن بعد، تشمل دورات فيديو واختبارات تفاعلية.",
+                image: "assets/project.image/1.jpeg",
+                category: "التعليم",
+                categoryColor: "text-green-800 dark:text-green-300 bg-green-200 dark:bg-green-900/50",
+                isFeatured: true,
+                durationDays: 120,
+                stats: [
+                    { icon: "users", value: "+5000", label: "مستخدم" },
+                    { icon: "cloud-check", value: "99.9%", label: "جاهزية" },
+                    { icon: "graduation-cap", value: "30+", label: "دورة تدريبية" },
+                ],
+                features: ["تصميم متجاوب", "بوابة دفع آمنة", "لوحة تحكم للمدربين", "دعم فني مستمر"]
+            },
+            {
+                id: 2,
+                title: "تطبيق إدارة العقارات",
+                description: "تطبيق جوال يسهل إدارة الإيجارات والعقود والصيانة للملاك والمستأجرين.",
+                image: "assets/project.image/2.jpeg",
+                category: "العقارات",
+                categoryColor: "text-indigo-800 dark:text-indigo-300 bg-indigo-200 dark:bg-indigo-900/50",
+                isFeatured: false,
+                features: ["تنبيهات دفع الإيجار", "تتبع طلبات الصيانة", "تقارير مالية", "واجهة سهلة الاستخدام"]
+            },
+            {
+                id: 3,
+                title: "موقع حكومي للخدمات الإلكترونية",
+                description: "بوابة خدمات رقمية متوافقة مع المعايير الحكومية لتسهيل الإجراءات على المواطنين.",
+                image: "assets/project.image/3.jpeg",
+                category: "حكومي",
+                categoryColor: "text-blue-800 dark:text-blue-300 bg-blue-200 dark:bg-blue-900/50",
+                isFeatured: false,
+                features: ["أمان عالي للبيانات", "سرعة في الأداء", "توافق مع الهواتف الذكية", "دعم فني متكامل"]
+            },
+           
+            {
+
+                id: 4,
+                title: "نظام إدارة مخزون متقدم",
+                description: "برنامج سحابي لمتابعة المخزون، الطلبات، والموردين للشركات التجارية والصناعية.",
+                image: "assets/project.image/4.jpeg",
+                category: "تجاري",
+                categoryColor: "text-purple-800 dark:text-purple-300 bg-purple-200 dark:bg-purple-900/50",
+                isFeatured: false,
+                features: ["تكامل مع نقاط البيع", "تنبيهات النقص في المخزون", "تقارير مبيعات مفصلة", "إدارة صلاحيات المستخدمين"]
+            },
+             {
+                id: 5,
+                title: "نظام إدارة مخزون متقدم",
+                description: "برنامج سحابي لمتابعة المخزون، الطلبات، والموردين للشركات التجارية والصناعية.",
+                image: "assets/project.image/5.jpeg",
+                category: "تجاري",
+                categoryColor: "text-purple-800 dark:text-purple-300 bg-purple-200 dark:bg-purple-900/50",
+                isFeatured: false,
+                features: ["تكامل مع نقاط البيع", "تنبيهات النقص في المخزون", "تقارير مبيعات مفصلة", "إدارة صلاحيات المستخدمين"]
+            },
+        
+        ];
+
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Mobile Menu Logic
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.setAttribute('data-lucide', 'x');
+            } else {
+                menu.classList.add('hidden');
+                icon.setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons();
+        }
+
+        // Contact Form Logic
+        function submitForm(e) {
+            e.preventDefault();
+            // Simulate API call
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'جاري الإرسال...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                document.getElementById('contact-form').classList.add('hidden');
+                document.getElementById('contact-success').classList.remove('hidden');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 1000);
+        }
+
+        function resetForm() {
+            document.getElementById('contact-form').reset();
+            document.getElementById('contact-form').classList.remove('hidden');
+            document.getElementById('contact-success').classList.add('hidden');
+        }
+
+        // FAQ Render & Toggle Logic
+        function renderFaqs() {
+            const container = document.getElementById('faq-container');
+            if(!container) return;
+            
+            container.innerHTML = faqs.map((faq, index) => `
+                <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 overflow-hidden">
+                    <button onclick="toggleFaq(${index})" class="w-full px-6 py-4 text-right flex items-center justify-between bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <span class="font-bold text-gray-800 dark:text-white">${faq.question}</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 dark:text-gray-500 faq-icon" id="icon-faq-${index}"></i>
+                    </button>
+                    <div id="faq-${index}" class="hidden px-6 py-4 bg-white dark:bg-slate-800 text-gray-600 dark:text-gray-300 border-t border-gray-100 dark:border-slate-700 transition-all duration-300">
+                        ${faq.answer}
+                    </div>
+                </div>
+            `).join('');
+            
+            lucide.createIcons(); // Re-init icons for new content
+        }
+
+        function toggleFaq(index) {
+            const content = document.getElementById(`faq-${index}`);
+            const icon = document.getElementById(`icon-faq-${index}`);
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                content.classList.add('animate-fade-in-down'); 
+                
+                icon.setAttribute('data-lucide', 'chevron-up');
+                icon.classList.remove('text-gray-400');
+                icon.classList.add('text-secondary');
+            } else {
+                content.classList.add('hidden');
+                content.classList.remove('animate-fade-in-down');
+
+                icon.setAttribute('data-lucide', 'chevron-down');
+                icon.classList.add('text-gray-400');
+                icon.classList.remove('text-secondary');
+            }
+            lucide.createIcons();
+        }
+
+        // Services Rendering
+        function createServiceCardHTML(service) {
+            return `
+                <div class="service-card" data-service-id="${service.id}">
+                    <div class="service-card-inner">
+                        <div class="service-icon-container">
+                            <div class="service-icon-wrapper">
+                                <img
+                                    src="${service.image}"
+                                    alt="${service.title}"
+                                    class="service-icon-image"
+                                    loading="lazy"
+                                >
+                                <div class="service-glow-animation"></div>
+                            </div>
+                        </div>
+                        <div class="service-content flex-grow flex flex-col">
+                            <h3 class="service-title">${service.title}</h3>
+                            <p class="service-description">${service.description}</p>
+                            <div class="service-actions">
+                                <button
+                                    class="btn service-details-btn"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#serviceDetailsModal${service.id}"
+                                >
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    المزيد من التفاصيل
+                                </button>
+                                <a href="#contact" class="btn service-contact-btn">
+                                    <i class="fas fa-phone me-2"></i>
+                                    تواصل معنا
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createServiceModalHTML(service) {
+            const typesHtml = service.types.map(type => `
+                <div class="col-md-6 mb-2">
+                  <div class="d-flex align-items-center p-2 bg-light rounded text-dark">
+                    <i class="fas fa-check text-success me-2"></i>
+                    <span>${type}</span>
+                  </div>
+                </div>
+            `).join('');
+
+            const featuresHtml = service.features.map(feature => `
+                <span class="badge bg-primary px-3 py-2 me-1 mb-1">${feature}</span>
+            `).join('');
+
+            return `
+                <div class="modal fade" id="serviceDetailsModal${service.id}" tabindex="-1" aria-labelledby="serviceDetailsModalLabel${service.id}" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="serviceDetailsModalLabel${service.id}">${service.title}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-end">
+                                <div class="service-detail-card p-4 border rounded shadow-sm text-dark bg-white">
+                                    <div class="d-flex align-items-center mb-4">
+                                        <img src="${service.image}" alt="${service.title}" class="service-detail-image ms-3">
+                                        <div>
+                                            <h4 class="mb-1 fw-bold text-dark">${service.title}</h4>
+                                            <p class="text-muted mb-0">${service.description}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <h6 class="fw-bold text-primary mb-3">الأنواع المتاحة:</h6>
+                                        <div class="row g-2">
+                                            ${typesHtml}
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h6 class="fw-bold text-primary mb-3">أهم المزايا:</h6>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            ${featuresHtml}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                                <button type="button" class="btn btn-primary" onclick="window.bootstrap.Modal.getInstance(document.getElementById('serviceDetailsModal${service.id}')).hide(); document.getElementById('contact').scrollIntoView();">تواصل معنا</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderServices() {
+            const gridContainer = document.getElementById('services-grid-container');
+            const modalsContainer = document.getElementById('modals-container');
+
+            if (gridContainer && modalsContainer) {
+                let cardsHtml = '';
+                let modalsHtml = '';
+
+                defaultServices.forEach(service => {
+                    cardsHtml += createServiceCardHTML(service);
+                    modalsHtml += createServiceModalHTML(service);
+                });
+
+                gridContainer.innerHTML = cardsHtml;
+                modalsContainer.innerHTML = modalsHtml;
+            }
+        }
+
+        // ================= NEW PORTFOLIO LOGIC =================
+
+        // Render Featured Project Card
+        function createFeaturedProjectCardHTML(project) {
+            const statsHTML = project.stats ? project.stats.map(stat => `
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center justify-center rounded-full bg-blue-50 dark:bg-slate-700 text-secondary w-10 h-10">
+                        <i data-lucide="${stat.icon}" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-lg text-textPrimary dark:text-darkTextPrimary">${stat.value}</p>
+                        <p class="text-sm text-muted dark:text-darkMuted">${stat.label}</p>
+                    </div>
+                </div>
+            `).join('') : '';
+
+            return `
+                <div class="md:col-span-2 lg:col-span-3 flex flex-col md:flex-row gap-6 sm:gap-8 p-6 bg-card dark:bg-darkCard rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700 hover:shadow-2xl transition-all duration-300">
+                    <div class="w-full md:w-1/2 rounded-lg overflow-hidden relative group">
+                        <div class="relative w-full aspect-video overflow-hidden rounded-lg">
+                            <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                            <div class="absolute top-4 right-4 bg-accent text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">مشروع مميز</div>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2 flex flex-col justify-center">
+                        <div class="flex flex-col gap-4">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider ${project.categoryColor} px-3 py-1 rounded-full">
+                                    ${project.category}
+                                </span>
+                                <h3 class="text-2xl sm:text-3xl font-bold mt-3 text-textPrimary dark:text-darkTextPrimary">${project.title}</h3>
+                                <p class="text-muted dark:text-darkMuted mt-2 text-base leading-relaxed">${project.description}</p>
+                            </div>
+                            ${statsHTML ? `<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-gray-100 dark:border-slate-700">${statsHTML}</div>` : ''}
+                        </div>
+                         <div class="mt-8">
+                            <button onclick="openProjectPreview(${project.id})" class="bg-primary hover:bg-slate-800 dark:hover:bg-slate-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors flex items-center gap-2">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                                معاينة المشروع
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render Standard Project Card
+        function createProjectCardHTML(project) {
+            const featuresHTML = project.features.slice(0, 2).map(feature => `
+                <li class="flex items-center gap-2">
+                    <i data-lucide="check" class="w-4 h-4 text-secondary"></i>
+                    <span class="text-sm text-gray-500 dark:text-gray-400">${feature}</span>
+                </li>
+            `).join('');
+
+            return `
+                <div class="flex flex-col gap-4 p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-700 hover:-translate-y-2 cursor-pointer group" onclick="openProjectPreview(${project.id})">
+                    <div class="w-full rounded-lg overflow-hidden">
+                        <div class="relative w-full aspect-video overflow-hidden rounded-lg">
+                            <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent group-hover:from-black/40 transition-colors"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider ${project.categoryColor} px-3 py-1 rounded-full">
+                            ${project.category}
+                        </span>
+                        <h3 class="text-xl font-bold mt-3 text-gray-900 dark:text-white group-hover:text-primary dark:group-hover:text-secondary transition-colors">${project.title}</h3>
+                        <p class="text-gray-500 dark:text-gray-400 mt-1 text-sm line-clamp-2">${project.description}</p>
+                    </div>
+                    <ul class="flex flex-col gap-2 pt-4 border-t border-gray-100 dark:border-slate-700 mt-auto">
+                        ${featuresHTML}
+                        <li class="text-xs text-secondary font-semibold mt-1">المزيد من التفاصيل...</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        // Generate Modal Content
+        function createModalContentHTML(project) {
+             const statsHTML = project.stats ? project.stats.map(stat => `
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-50 dark:bg-slate-700 text-secondary">
+                        <i data-lucide="${stat.icon}" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-lg text-gray-900 dark:text-white">${stat.value}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">${stat.label}</p>
+                    </div>
+                </div>
+            `).join('') : '';
+
+             const featuresHTML = project.features.map(f => `
+                <li class="flex items-start gap-2">
+                     <i data-lucide="check-circle" class="w-5 h-5 text-secondary mt-1 flex-shrink-0"></i>
+                     <span class="text-gray-600 dark:text-gray-300">${f}</span>
+                </li>
+            `).join('');
+
+            return `
+                <div class="flex justify-between items-start mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
+                    <div>
+                        <h3 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">${project.title}</h3>
+                         <span class="text-sm font-semibold text-secondary mt-1 block">${project.category}</span>
+                    </div>
+                    <button onclick="closeProjectPreview()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                        <i data-lucide="x" class="w-6 h-6 text-gray-500 dark:text-gray-400"></i>
+                    </button>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <img src="${project.image}" alt="${project.title}" class="rounded-xl w-full h-64 object-cover mb-4 shadow-md" />
+                        <div class="bg-gray-50 dark:bg-slate-700 p-4 rounded-lg border border-gray-100 dark:border-slate-600">
+                             <p class="text-gray-700 dark:text-gray-300 leading-relaxed">${project.description}</p>
+                             ${project.durationDays ? `<p class="mt-4 font-semibold text-gray-900 dark:text-white flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4 text-secondary"></i> مدة التنفيذ: <span class="text-primary dark:text-blue-300">${project.durationDays} يوم</span></p>` : ''}
+                        </div>
+                    </div>
+                    <div class="flex flex-col h-full">
+                        ${project.stats ? `<div class="mb-6">
+                            <h4 class="font-bold text-lg mb-4 text-gray-900 dark:text-white">إحصائيات المشروع</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                ${statsHTML}
+                            </div>
+                        </div>` : ''}
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-lg mb-4 text-gray-900 dark:text-white">المميزات والتفاصيل</h4>
+                            <ul class="space-y-3">
+                                ${featuresHTML}
+                            </ul>
+                        </div>
+                         <div class="mt-8 text-left border-t border-gray-100 dark:border-slate-700 pt-6">
+                            <a href="#contact" onclick="closeProjectPreview()" class="inline-flex items-center justify-center bg-secondary text-white px-6 py-3 rounded-lg font-bold hover:bg-sky-600 transition-colors shadow-md gap-2 w-full sm:w-auto">
+                                <i data-lucide="message-square" class="w-5 h-5"></i>
+                                اطلب مشروعاً مماثلاً
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        const projectsGrid = document.getElementById('projects-grid');
+        const projectModal = document.getElementById('projectModal');
+        const modalContentWrapper = document.getElementById('modal-content-wrapper');
+
+        function openProjectPreview(projectId) {
+            const project = projectsData.find(p => p.id === projectId);
+            if (!project) return;
+            
+            modalContentWrapper.innerHTML = createModalContentHTML(project);
+            projectModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling background
+            lucide.createIcons(); // Re-init icons for modal content
+        }
+
+        function closeProjectPreview() {
+            projectModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == projectModal) {
+                closeProjectPreview();
+            }
+        }
+
+        function renderProjects() {
+            if (!projectsGrid) return;
+            
+            const featuredProject = projectsData.find(p => p.isFeatured);
+            const otherProjects = projectsData.filter(p => !p.isFeatured);
+
+            let html = '';
+
+            if (featuredProject) {
+                html += createFeaturedProjectCardHTML(featuredProject);
+            }
+
+            otherProjects.forEach(project => {
+                html += createProjectCardHTML(project);
+            });
+
+            projectsGrid.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        // Scroll Spy Logic
+        function initScrollSpy() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    // Adjustment for sticky header
+                    if (scrollY >= (sectionTop - 200)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        // Initialize App
+        renderFaqs();
+        renderServices();
+        renderProjects();
+        initScrollSpy();
+
+    </script>
+</body>
+</html>
